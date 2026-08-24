@@ -34,11 +34,20 @@ const Ingresso = () => {
 
     const subtotal = carrinho.reduce((ac,item)=> ac + item.preco * item.quantidade,0);
     const total = subtotal > 0 ? subtotal + taxaServico :0;
-    
-    return (
-        <>
 
-        </>
+    const confirmarPedido=()=>{
+        setEnviar(true);
+        setStatus("Processando Pagamento...")
+        setTimeout(()=>{
+            setStatus("Compra Finalizada! Bom Filme!!")
+            setEnviar(false)
+        },4000);
+    }
+
+    return (
+        <div>
+
+        </div>
     )
 }
 
