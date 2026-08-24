@@ -30,7 +30,7 @@ const Ingresso = () => {
     }
 
     const filmesDisponiveis = items.filter(item=>item.disponivel);
-    const carrinho = item.filter(item=>item.quantidade>0);
+    const carrinho = items.filter(item=>item.quantidade>0);
 
     const subtotal = carrinho.reduce((ac,item)=> ac + item.preco * item.quantidade,0);
     const total = subtotal > 0 ? subtotal + taxaServico :0;
@@ -45,13 +45,50 @@ const Ingresso = () => {
     }
 
     return (
-        <div>
+        <div className="container">
+            <h2>Cardápio do Restaurante</h2>
+            {filmesDisponiveis.map(produto => (
+                <div key={produto.id} className="item-cardapio">
+                    <span>{produto.nome}(R$ {produto.preco.toFixed(2)})</span>
+                    <div className="item-controles">
+                        <button onClick={() => alterarQuantidade(produto.id, -1)} className="btn-qtn">-</button>
+                        <span>{produto.quantidade}</span>
+                        <button onClick={() => alterarQuantidade(produto.id, +1)} className="btn-qtn">+</button>
+                    </div>
+                </div>
+            ))}
 
+
+            <hr className="linha" />
+            <h3>Resumo da Entrega</h3>
+            {carrinho.length === 0 ? (
+                <p>Seu carrinho está vazio</p>
+            ):(
+            <>
+                <ul className="resumo-lista">
+                    {carrinho.map(item => (
+                        <li key={item.id}>
+                            {item.quantidade} X {item.nome}-R$ {(item.preco * item.quantidade).toFixed(2)}
+                        </li>
+                    ))}
+                </ul>
+                <p>Subtotal: R${subtotal.toFixed(2)}</p>
+                <p>Taxa de Entrega: R${taxaServico.toFixed(2)}</p>
+                <strong className="total">Total a pagar: R${total.toFixed(2)}</strong>
+
+                <button className="btn-confirmar" onClick={confirmarPedido} disabled={enviar}>
+                    {enviar ? "Enviando..." : "Confirmar Pedido"}
+                </button>
+            </>
+            )}
+            {status && (
+                <div className="alerta-status"> 
+                    <strong>Alerta:</strong>{status}
+                </div>
+            )}
         </div>
     )
 }
-
-export default Ingresso
 
 export default Ingresso
 
